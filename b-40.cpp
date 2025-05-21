@@ -2,6 +2,12 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
+
+string convert(const string &dob)
+{
+    return dob.substr(6, 4) + dob.substr(3, 3) + dob.substr(0, 2);
+}
+
 int main()
 {
     int n;
@@ -11,9 +17,9 @@ int main()
     {
         string name, dob;
         cin >> name >> dob;
-        v.push_back({dob, name});
+        v.push_back({convert(dob), name});
     }
     sort(v.begin(), v.end());
-    cout << v.back().second << endl
-         << v.front().second << endl;
+    cout << v.back().second << endl;  
+    cout << v.front().second << endl; 
 }

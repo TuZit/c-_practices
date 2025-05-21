@@ -1,24 +1,26 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <sstream>
-#include <cctype>
+#include <string>
 using namespace std;
 
-string viettat(string s)
+struct SinhVien
 {
-    stringstream ss(s);
-    string word, res;
-    while (ss >> word)
-        res += toupper(word[0]);
-    return res;
-}
+    string ma, ten, lop, email;
+};
 
-string tolowercase(string s)
+bool check_nganh(const string &ma, const string &nganh)
 {
-    for (char &c : s)
-        c = tolower(c);
-    return s;
+    if (nganh == "KE TOAN" && ma.substr(4, 4) == "KT")
+        return true;
+    if (nganh == "CONG NGHE THONG TIN" && ma.substr(4, 4) == "CN")
+        return true;
+    if (nganh == "AN TOAN THONG TIN" && ma.substr(4, 4) == "AT")
+        return true;
+    if (nganh == "VIEN THONG" && ma.substr(4, 4) == "VT")
+        return true;
+    if (nganh == "DIEN TU" && ma.substr(4, 4) == "DT")
+        return true;
+    return false;
 }
 
 int main()
@@ -26,26 +28,50 @@ int main()
     int n;
     cin >> n;
     cin.ignore();
-    vector<pair<string, string>> gv(n);
-    for (int i = 0; i < n; i++)
+    vector<SinhVien> ds(n);
+    for (int i = 0; i < n; ++i)
     {
-        getline(cin, gv[i].first);  // ten
-        getline(cin, gv[i].second); // bo mon
+        getline(cin, ds[i].ma);
+        getline(cin, ds[i].ten);
+        getline(cin, ds[i].lop);
+        getline(cin, ds[i].email);
     }
     int q;
     cin >> q;
     cin.ignore();
     while (q--)
     {
-        string keyword;
-        getline(cin, keyword);
-        keyword = tolowercase(keyword);
-        cout << "DANH SACH GIANG VIEN THEO TU KHOA " << keyword << ":\n";
-        for (int i = 0; i < n; i++)
+        string nganh;
+        getline(cin, nganh);
+        string nganh_upper = nganh;
+        for (char &c : nganh_upper)
+            c = toupper(c);
+
+        cout << "DANH SACH SINH VIEN NGANH " << nganh_upper << ":\n";
+        for (const auto &sv : ds)
         {
-            string name = tolowercase(gv[i].first);
-            if (name.find(keyword) != string::npos)
-                printf("GV%02d %s %s\n", i + 1, gv[i].first.c_str(), viettat(gv[i].second).c_str());
+            string code = sv.ma.substr(5, 2); 
+            if (nganh_upper == "KE TOAN" && sv.ma.substr(5, 2) == "KT")
+            {
+                cout << sv.ma << " " << sv.ten << " " << sv.lop << " " << sv.email << endl;
+            }
+            else if (nganh_upper == "CONG NGHE THONG TIN" && sv.ma.substr(5, 2) == "CN" && sv.lop[0] != 'E')
+            {
+                cout << sv.ma << " " << sv.ten << " " << sv.lop << " " << sv.email << endl;
+            }
+            else if (nganh_upper == "AN TOAN THONG TIN" && sv.ma.substr(5, 2) == "AT" && sv.lop[0] != 'E')
+            {
+                cout << sv.ma << " " << sv.ten << " " << sv.lop << " " << sv.email << endl;
+            }
+            else if (nganh_upper == "VIEN THONG" && sv.ma.substr(5, 2) == "VT")
+            {
+                cout << sv.ma << " " << sv.ten << " " << sv.lop << " " << sv.email << endl;
+            }
+            else if (nganh_upper == "DIEN TU" && sv.ma.substr(5, 2) == "DT")
+            {
+                cout << sv.ma << " " << sv.ten << " " << sv.lop << " " << sv.email << endl;
+            }
         }
     }
+    return 0;
 }

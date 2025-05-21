@@ -19,7 +19,7 @@ int main()
         int count = 0;
         for (auto p : freq)
             if (p.second > 1)
-                count++;
+                count += p.second;
         cout << count << endl;
     }
     return 0;
